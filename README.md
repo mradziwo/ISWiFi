@@ -22,6 +22,8 @@ Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://j
 ## HTTP Parsing
 https://github.com/nodejs/http-parser
 
+## DFU command line
+https://github.com/BrieucDM/DFUSE-commandline
 
 
 ### Markdown
