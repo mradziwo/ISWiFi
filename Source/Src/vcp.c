@@ -5,7 +5,7 @@
 #include "led.h"
 
 static osMailQId Rx;
-
+extern UART_HandleTypeDef huart3;
 typedef struct
 	{
 	U8 Data[CDC_DATA_FS_MAX_PACKET_SIZE];
@@ -36,10 +36,7 @@ U8 Send(char* data, U8 size, U32 timeout)
 
 void VcpTask(void const* pvParameters)
 	{
-	U16 led;
-	/*HAL_GPIO_TogglePin(GPIOE, PK1_HEATER_Pin);
-
-	HAL_GPIO_TogglePin(GPIOE, PK1_HEATER_Pin);*/
+U32 len;
 	osMailQDef(RxBuf,16,tVcpBuf);
 	while((Rx=osMailCreate(osMailQ(RxBuf),NULL))==NULL);
 	while(1)
@@ -53,31 +50,12 @@ void VcpTask(void const* pvParameters)
 
 			U8* data=buf->Data;
 			U32 size=buf->Size;
+			len=size;
+
 			while(size--)
 				{
-				switch (data[0])
-					{
-					case '1':
-						RelayPK1Set(true);
-						break;
-
-					case '2':
-						RelayPK1Set(false);
-						break;
-
-					case '3':
-						RelayPK2Set(true);
-						break;
-
-					case '4':
-						RelayPK2Set(false);
-						break;
-
-					default:
-						break;
-					}
-
-
+				Send(&data[len-size-1], 1,1000);
+				HAL_UART_Transmit(&huart3, (uint8_t*) &data[len-size-1], 1, 1000);
 				}
 
 			osMailFree(Rx,event.value.p);

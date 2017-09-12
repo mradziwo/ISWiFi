@@ -103,10 +103,12 @@ void selfTest(void);
 
 /* USER CODE END 0 */
 
+char UART3_Data;
+
 
 int main(void)
 {
-
+	char buf[32];
   /* USER CODE BEGIN 1 */
 
   /* USER CODE END 1 */
@@ -164,23 +166,24 @@ int main(void)
   //osThreadDef(DatabaseTask, DatabaseTask, osPriorityNormal, 0, 128);
   //osThreadCreate(osThread(DatabaseTask), &hadc1);
 //
-  //osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 512);
-  //defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
-  //osThreadDef(VcpTask, VcpTask, osPriorityNormal, 0, 128);
-  //osThreadCreate(osThread(VcpTask), NULL);
-  //sprintf(buf, "VCP Task Launched\r\n");
+  osThreadDef(defaultTask, StartDefaultTask, osPriorityNormal, 0, 128);
+  defaultTaskHandle = osThreadCreate(osThread(defaultTask), NULL);
+
+  osThreadDef(VcpTask, VcpTask, osPriorityNormal, 0, 128);
+  osThreadCreate(osThread(VcpTask), NULL);
+  //sprintf(buf, "VCP Launched\r\n");
   //Send(buf, strlen(buf), 500);
 
 
-  osThreadDef(ADCTask, ADCTask, osPriorityNormal, 0, 128);
-  osThreadCreate(osThread(ADCTask), &hadc1);
+  //osThreadDef(ADCTask, ADCTask, osPriorityNormal, 0, 128);
+  //osThreadCreate(osThread(ADCTask), &hadc1);
 
 
   //sprintf(buf, "ADCTask Launched\r\n");
   //Send(buf, strlen(buf), 500);
 
-  osThreadDef(TempControllerTask, TempControllerTask, osPriorityNormal, 0, 128);
-  osThreadCreate(osThread(TempControllerTask), NULL);
+  //osThreadDef(TempControllerTask, TempControllerTask, osPriorityNormal, 0, 128);
+  //osThreadCreate(osThread(TempControllerTask), NULL);
 
 
   //sprintf(buf, "Controller Task Launched\r\n");
@@ -216,6 +219,18 @@ int main(void)
 
 }
 
+
+void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart){
+
+ char n = 0;
+ char UART_Aux[32];
+
+ if(huart->Instance == USART3)
+ {
+  Send(&UART3_Data, 1,1000);
+  HAL_UART_Receive_IT(&huart3, (uint8_t*) &UART3_Data, 1);
+ }
+}
 
 
 /** System Clock Configuration
@@ -505,7 +520,7 @@ static void MX_USART2_UART_Init(void)
 /* USART3 init function */
 static void MX_USART3_UART_Init(void)
 {
-
+  //enable WiFi Power!!!!
   huart3.Instance = USART3;
   huart3.Init.BaudRate = 115200;
   huart3.Init.WordLength = UART_WORDLENGTH_8B;
@@ -518,7 +533,8 @@ static void MX_USART3_UART_Init(void)
   {
     Error_Handler();
   }
-
+  __HAL_UART_ENABLE_IT(&huart3, UART_IT_RXNE);
+  HAL_UART_Receive_IT(&huart3, (uint8_t*) &UART3_Data, 1);
 }
 
 /** Configure pins as 
@@ -608,11 +624,11 @@ void StartDefaultTask(void const * argument)
   char buf[32];
   sprintf(buf, "Default Task Started:\r\n");
   Send(buf, strlen(buf), 500);
-
+  sprintf(buf, "Tick\r\n");
   for(;;)
   {
-    osDelay(1000);
-
+    osDelay(5000);
+    Send(buf, strlen(buf), 500);
     //HAL_GPIO_TogglePin(GPIOE, PK1_HEATER_Pin);
   }
   /* USER CODE END 5 */ 
