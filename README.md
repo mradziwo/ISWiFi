@@ -7,11 +7,26 @@
 
 
 
+
+### FreeRTOS
+implemented with cmsis API:
+https://www.keil.com/pack/doc/CMSIS/RTOS/html/usingOS.html
+
 ## Welcome to GitHub Pages
 
 You can use the [editor on GitHub](https://github.com/mradziwo/ISWiFi/edit/master/README.md) to maintain and preview the content for your website in Markdown files.
 
 Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+
+# Additional Links
+## HTTP Parsing
+https://github.com/nodejs/http-parser
+
+## DFU command line
+https://github.com/BrieucDM/DFUSE-commandline
+
+## ESP AT commands
+https://room-15.github.io/blog/2015/03/26/esp8266-at-command-reference/
 
 ### Markdown
 
