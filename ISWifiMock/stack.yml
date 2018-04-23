@@ -1,4 +1,4 @@
-WiFiMock:
+iswifi:
   image: mradziwo/iswifimock
   ports:
     - "5000:5000"
