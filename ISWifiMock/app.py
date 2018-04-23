@@ -34,7 +34,7 @@ def DecodeMessage(payload):
 
 @app.route('/')
 def hello_world():
-    return 'Flask Dockerized'
+    return 'ISWiFi Mock - dockerized version'
     
 @app.route('/data', methods=['GET', 'POST'])
 def login():
@@ -62,18 +62,18 @@ def Param1000():
         app.timeshift=DecodeMessage(request.get_data())-time.time()
         return Response()
     else:
-        return Response(EncodeMessage(int(time.time()+app.timeshift)))   
+        return Response(EncodeMessage(int(time.time()+app.timeshift)),mimetype='application/msgpack')   
 
 @app.route('/Time/SystemStartTime')
 def Param1001():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["SystemStartTime"]))
+        return Response(EncodeMessage(app.datablock["SystemStartTime"]),mimetype='application/msgpack')
 
         
 @app.route('/Time/SystemUptime')
 def Param1002():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["SystemUptime"]))
+        return Response(EncodeMessage(app.datablock["SystemUptime"]),mimetype='application/msgpack')
 
 ######################
 #### Runtime   #######
@@ -82,17 +82,17 @@ def Param1002():
 @app.route('/Runtime/LastIgnition')
 def Param1100():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["LastIgnition"]))
+        return Response(EncodeMessage(app.datablock["LastIgnition"]),mimetype='application/msgpack')
 
 @app.route('/Runtime/StateUptime')
 def Param1101():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["StateUptime"]))
+        return Response(EncodeMessage(app.datablock["StateUptime"]),mimetype='application/msgpack')
 
 @app.route('/Runtime/State')
 def Param1102():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["State"]))
+        return Response(EncodeMessage(app.datablock["State"]),mimetype='application/msgpack')
 
 ######################
 #######   Errors #####
@@ -102,30 +102,30 @@ def Param1102():
 @app.route('/Errors/Lockout')
 def Param1200():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["Lockout"]))
+        return Response(EncodeMessage(app.datablock["Lockout"]),mimetype='application/msgpack')
 
 @app.route('/Errors/LastErrorTime')
 def Param1201():
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["LastErrorTime"]))
+        return Response(EncodeMessage(app.datablock["LastErrorTime"]),mimetype='application/msgpack')
 
 
 @app.route('/Errors/LastError')
 def Param1202(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["LastError"]))
+        return Response(EncodeMessage(app.datablock["LastError"]),mimetype='application/msgpack')
 
 
 @app.route('/Errors/LastLockoutReleseTime')
 def Param1203(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["LastLockoutReleseTime"]))
+        return Response(EncodeMessage(app.datablock["LastLockoutReleseTime"]),mimetype='application/msgpack')
 
 
 @app.route('/Errors/ErrorList',methods=['GET', 'DELETE'])
 def Param1204(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ErrorList"]))
+        return Response(EncodeMessage(app.datablock["ErrorList"]),mimetype='application/msgpack')
     if request.method == 'DELETE':
         app.datablock["ErrorList"]=[]
 
@@ -139,31 +139,31 @@ def Param1204():
 @app.route('/Properties/ID')
 def Param1300(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ID"]))
+        return Response(EncodeMessage(app.datablock["ID"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/Firmware')
 def Param1301(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["Firmware"]))
+        return Response(EncodeMessage(app.datablock["Firmware"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/Hardware')
 def Param1302(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["Hardware"]))
+        return Response(EncodeMessage(app.datablock["Hardware"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/LastChange')
 def Param1303(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["LastChange"]))
+        return Response(EncodeMessage(app.datablock["LastChange"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/Changes',methods=['GET', 'DELETE'])
 def Param1304(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["Changes"]))
+        return Response(EncodeMessage(app.datablock["Changes"]),mimetype='application/msgpack')
     if request.method == 'DELETE':
         app.datablock["Changes"]=[]
 
@@ -171,25 +171,25 @@ def Param1304():
 @app.route('/Properties/Log',methods=['GET', 'DELETE'])
 def Param1305(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["PropertiesLog"]))
+        return Response(EncodeMessage(app.datablock["PropertiesLog"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/PermLog')
 def Param1306(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["PermLog"]))
+        return Response(EncodeMessage(app.datablock["PermLog"]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/Settings')
 def Param1307(): 
     if request.method == 'GET':
-        return Response(EncodeMessage([["/ISM0-10/Available",str(app.datablock["Available"])],["/Time/SystemStartTime",str(app.datablock["SystemStartTime"])],["/Modbus/GatewayTimeout",str(app.datablock["ModbusGatewayTimeout"])]]))
+        return Response(EncodeMessage([["/ISM0-10/Available",str(app.datablock["Available"])],["/Time/SystemStartTime",str(app.datablock["SystemStartTime"])],["/Modbus/GatewayTimeout",str(app.datablock["ModbusGatewayTimeout"])]]),mimetype='application/msgpack')
 
 
 @app.route('/Properties/UART1',methods=['GET', 'POST'])
 def Param1308(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["UART1"]))
+        return Response(EncodeMessage(app.datablock["UART1"]),mimetype='application/msgpack')
     if request.method == 'POST':
         app.datablock["UART1"]=DecodeMessage(request.get_data())
         return Response()
@@ -198,7 +198,7 @@ def Param1308():
 @app.route('/Properties/UART2',methods=['GET', 'POST'])
 def Param1309(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["UART2"]))
+        return Response(EncodeMessage(app.datablock["UART2"]),mimetype='application/msgpack')
     if request.method == 'POST':
         app.datablock["UART2"]=DecodeMessage(request.get_data())
         return Response()
@@ -207,7 +207,7 @@ def Param1309():
 @app.route('/Properties/APIversion')
 def Param1310(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["APIversion"]))
+        return Response(EncodeMessage(app.datablock["APIversion"]),mimetype='application/msgpack')
 
 
 ######################
@@ -218,7 +218,7 @@ def Param1310():
 @app.route('/Querry/Interval',methods=['GET', 'POST'])
 def Param1400(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["Interval"]))
+        return Response(EncodeMessage(app.datablock["Interval"]),mimetype='application/msgpack')
     if request.method == 'POST':
         app.datablock["Interval"]=DecodeMessage(request.get_data())
         return Response()
@@ -232,7 +232,7 @@ def Param1400():
 @app.route('/Modbus/Address',methods=['GET', 'POST'])
 def Param1500(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ModbusAddress"]))
+        return Response(EncodeMessage(app.datablock["ModbusAddress"]),mimetype='application/msgpack')
     if request.method == 'POST':
         app.datablock["ModbusAddress"]=DecodeMessage(request.get_data())
         return Response()
@@ -241,7 +241,7 @@ def Param1500():
 @app.route('/Modbus/GatewayTimeout',methods=['GET', 'POST'])
 def Param1501(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ModbusGatewayTimeout"]))
+        return Response(EncodeMessage(app.datablock["ModbusGatewayTimeout"]),mimetype='application/msgpack')
     if request.method == 'POST':
         app.datablock["ModbusGatewayTimeout"]=DecodeMessage(request.get_data())
         return Response()
@@ -257,13 +257,13 @@ def Param1501():
 @app.route('/ISM010_all')
 def Param999(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ISM010_all"]))
+        return Response(EncodeMessage(app.datablock["ISM010_all"]),mimetype='application/msgpack')
 
 
 @app.route('/ISM010_available')
 def Param998(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["ISM010_available"]))
+        return Response(EncodeMessage(app.datablock["ISM010_available"]),mimetype='application/msgpack')
 
 
 @app.route('/ISM010_restart',methods=['GET', 'POST'])
@@ -273,7 +273,7 @@ def Param2000():
         if (DecodeMessage(request.get_data())==b"123"):
             return Response(EncodeMessage("OK"))
         else:
-            return Response(EncodeMessage("Wrong code - expeced 123 got:"+str(DecodeMessage(request.get_data()))))
+            return Response(EncodeMessage("Wrong code - expeced 123 got:"+str(DecodeMessage(request.get_data()))),mimetype='application/msgpack')
     else:
         return Response("GET received")
 
@@ -287,7 +287,7 @@ def registers(register):
         app.ISMparams[register]=DecodeMessage(request.get_data())
         return Response()
     else:
-        return Response(EncodeMessage(app.ISMparams[register]))
+        return Response(EncodeMessage(app.ISMparams[register]),mimetype='application/msgpack')
 
 
 ######################
@@ -304,18 +304,8 @@ def registers(register):
 @app.route('/FileList')
 def Param1700(): 
     if request.method == 'GET':
-        return Response(EncodeMessage(app.datablock["FileList"]))
+        return Response(EncodeMessage(app.datablock["FileList"]),mimetype='application/msgpack')
 
-
-
-
-@app.route('/dupa',methods=['GET', 'POST'])
-def Pa():
-    if request.method == 'POST':
-        q=request.get_data()
-        return Response(q)
-    else:
-        return Response("dupa")
 
 if __name__ == '__main__':
     app.datablock=json.loads("""\
