@@ -4,3 +4,4 @@ services:
     image: mradziwo/iswifimock
     ports:
     - "5000:5000"
+
